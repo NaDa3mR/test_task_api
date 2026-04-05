@@ -30,12 +30,12 @@ class TaskController extends Controller
             $tasks->orderByRaw("FIELD(priority, 'high', 'medium', 'low')")
                 ->orderBy('due_date', 'asc');
         }
-        $tasks = $tasks->paginate(10);
+        // $tasks = $tasks->paginate(10);
 
-        // $tasks = $tasks->get()->map(function ($task) {
-        //     $task->is_overdue = $task->due_date && $task->status !== 'done' && $task->due_date < now()->toDateString();
-        //     return $task;
-        // });
+        $tasks = $tasks->get()->map(function ($task) {
+            $task->is_overdue = $task->due_date && $task->status !== 'done' && $task->due_date < now()->toDateString();
+            return $task;
+        });
 
         return response()->json([
             'success' => true,
